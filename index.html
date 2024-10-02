@@ -16,21 +16,26 @@
         html, body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
             background-color: black;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
             -webkit-touch-callout: none; /* Prevent long tap context menu */
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* Remove tap highlight */
+            touch-action: manipulation; /* Disable double-tap zoom */
         }
         
         .container {
             position: relative;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
         }
         
         .image {
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: auto;
+            max-height: 100vh; /* Ensure the image doesn't overflow the height */
             object-fit: contain;
         }
         
@@ -41,7 +46,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100vw;
             height: 100%;
             padding-top: var(--grid-padding-top);
             padding-left: var(--grid-padding-left);
@@ -56,6 +61,7 @@
             opacity: .25;
             border: none;
             color: white;
+            touch-action: manipulation; /* Prevent zoom on button tap */
         }
         
         .button {
@@ -69,7 +75,7 @@
 <body>
 
 <div class="container">
-    <img src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
+    <img src="AKAI MPC 2000.png" alt="Grid Image" class="image">
     <div class="grid-container">
         <button class="grid-item button" onclick="playAudio(0)">1</button>
         <button class="grid-item button" onclick="playAudio(1)">2</button>
@@ -106,76 +112,25 @@
     ];
 
     function playAudio(index) {
-        if (audios[index].currentTime > 0 && !audios[index].paused) {
-            audios[index].pause();
-            audios[index].currentTime = 0;
-        }
-        if (index === 8) {
-            window.audio9 = audios[index];
-        }
+        audios[index].currentTime = 0; // Reset the sound to the beginning
         audios[index].play();
     }
 
     function pauseAudio9() {
-        if (window.audio9) {
-            window.audio9.pause();
+        if (audios[8]) {
+            audios[8].pause();
         }
     }
 
-    // Prevent double-tap zoom on iOS Safari
-    document.addEventListener('touchstart', function preventZoom(event) {
-        if (event.touches.length > 1) {
-            event.preventDefault();
-        }
-    }, { passive: false });
-
-    // Prevent zoom when double-tapping
+    // Prevent double-tap zoom
     let lastTouchEnd = 0;
     document.addEventListener('touchend', function(event) {
         const now = (new Date()).getTime();
         if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent double-tap zoom globally
         }
         lastTouchEnd = now;
     }, false);
-
-    // Adjust window size to match image dimensions exactly
-    const image = new Image();
-    image.src = 'AKAI MPC 2000 TEAL.png';
-    image.onload = function() {
-        const imgWidth = this.naturalWidth;
-        const imgHeight = this.naturalHeight;
-        
-        // Set window size
-        window.resizeTo(imgWidth, imgHeight);
-        
-        // Set body size
-        document.body.style.width = imgWidth + 'px';
-        document.body.style.height = imgHeight + 'px';
-        
-        // Set container and image size
-        const container = document.querySelector('.container');
-        container.style.width = imgWidth + 'px';
-        container.style.height = imgHeight + 'px';
-        
-        const displayedImage = document.querySelector('.image');
-        displayedImage.style.width = imgWidth + 'px';
-        displayedImage.style.height = imgHeight + 'px';
-    };
-
-    function updateButtonSizes(width, height) {
-        document.documentElement.style.setProperty('--button-width', width + '%');
-        document.documentElement.style.setProperty('--button-height', height + '%');
-    }
-
-    function updateGridGap(gap) {
-        document.documentElement.style.setProperty('--grid-gap', gap + 'px');
-    }
-
-    function updateGridPadding(top, left) {
-        document.documentElement.style.setProperty('--grid-padding-top', top + '%');
-        document.documentElement.style.setProperty('--grid-padding-left', left + '%');
-    }
 </script>
 
 </body>
