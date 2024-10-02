@@ -50,7 +50,7 @@
             text-align: center;
             font-size: 20px;
             cursor: pointer;
-            background: blue;
+            background: black;
             opacity: 0.25;
             border: none;
             color: white;
@@ -87,21 +87,12 @@
 </div>
 
 <script>
-    let audioContext;
+    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
     let bufferList = [];
     let playingSource = {};
-    let lastTouchTime = 0;  // Track last touch event for double-tap handling
-    const minTapInterval = 50; // Minimum time between taps
+    let lastTouchTime = 0;
+    const minTapInterval = 50;
 
-    // Initialize the audio context on user interaction (Safari requires user interaction to unlock audio context)
-    window.addEventListener('touchstart', function() {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            loadAudioFiles();
-        }
-    }, { passive: false });
-
-    // Array of audio file URLs
     const audioFiles = [
         'piano-1.mp3',
         'piano-2.mp3',
@@ -118,55 +109,37 @@
         'Hey!.mp3'
     ];
 
-    // Preload audio files and store in bufferList
-    function loadAudioFiles() {
-        audioFiles.forEach((file, index) => {
-            fetch(file)
-                .then(response => response.arrayBuffer())
-                .then(data => {
-                    audioContext.decodeAudioData(data, (buffer) => {
-                        bufferList[index] = buffer;
-                    });
-                })
-                .catch(err => console.error('Error loading audio file:', file, err));
-        });
+    function loadAudioFile(fileUrl) {
+        return fetch(fileUrl)
+            .then(response => response.arrayBuffer())
+            .then(data => audioContext.decodeAudioData(data));
     }
 
-    // Play audio using Web Audio API with rapid tap responsiveness
+    // Preload all audio files at the start
+    audioFiles.forEach((file, index) => {
+        loadAudioFile(file).then(buffer => {
+            bufferList[index] = buffer;
+        });
+    });
+
     function playAudio(index) {
         const currentTime = new Date().getTime();
-        const timeDifference = currentTime - lastTouchTime;
-
-        // Check if this is a super-fast tap; if so, skip delays
-        if (timeDifference < minTapInterval) {
-            lastTouchTime = currentTime;
-            return; // Block the action if taps are too fast
-        }
-
+        if (currentTime - lastTouchTime < minTapInterval) return;
         lastTouchTime = currentTime;
 
-        // Stop the currently playing audio for this button (if any)
         if (playingSource[index]) {
             playingSource[index].stop();
         }
 
-        // Immediately trigger playback for rapid response
-        requestAnimationFrame(() => {
-            const source = audioContext.createBufferSource();
-            source.buffer = bufferList[index];
-            source.connect(audioContext.destination);
+        const source = audioContext.createBufferSource();
+        source.buffer = bufferList[index];
+        source.connect(audioContext.destination);
+        source.start(0);
+        playingSource[index] = source;
 
-            // Start the audio from the beginning without delay
-            source.start(0);
-
-            // Keep track of the playing source for this button
-            playingSource[index] = source;
-
-            // Handle button 9 special case for pause with button 14
-            if (index === 8) {
-                window.audio9 = source;
-            }
-        });
+        if (index === 8) {
+            window.audio9 = source;
+        }
     }
 
     function pauseAudio9() {
@@ -175,22 +148,13 @@
         }
     }
 
-    // Disable double-tap zoom on buttons and maximize touch responsiveness
+    // Disable double-tap zoom
     document.querySelectorAll('.button').forEach(button => {
         button.addEventListener('touchstart', function(e) {
             e.preventDefault();
-            const currentTime = new Date().getTime();
-            const timeDifference = currentTime - lastTouchTime;
-
-            // Skip zoom if the tap interval is very short and allow fast play
-            if (timeDifference < 200 && timeDifference > 0) {
-                e.preventDefault();
-            }
-            lastTouchTime = currentTime;
         }, { passive: false });
     });
 
-    // Disable double-tap zoom for the entire document
     document.addEventListener('gesturestart', function (e) {
         e.preventDefault();
     });
@@ -198,13 +162,6 @@
     document.addEventListener('dblclick', function (e) {
         e.preventDefault();
     });
-
-    // Disable zooming by capturing touch events
-    document.addEventListener('touchmove', function (e) {
-        if (e.scale !== undefined && e.scale !== 1) {
-            e.preventDefault();
-        }
-    }, { passive: false });
 
     document.documentElement.style.touchAction = 'manipulation'; // Disable double-tap to zoom
 </script>
