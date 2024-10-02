@@ -16,29 +16,19 @@
         html, body {
             margin: 0;
             padding: 0;
-            background-color: black;
-            height: 100%;
-            width: 100%;
             overflow: hidden;
-            -webkit-touch-callout: none; /* Prevent long tap context menu */
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* Remove tap highlight */
-            touch-action: manipulation; /* Disable double-tap zoom */
+            background-color: black;
         }
-
         .container {
             position: relative;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            width: 100%;
+            height: 100%;
         }
-
         .image {
-            width: 100vw;
-            height: auto;
-            max-height: 100vh;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
-
         .grid-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -46,24 +36,21 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
+            width: 100%;
             height: 100%;
             padding-top: var(--grid-padding-top);
             padding-left: var(--grid-padding-left);
             box-sizing: border-box;
         }
-
         .grid-item {
             text-align: center;
             font-size: 20px;
             cursor: pointer;
-            background: red;
-            opacity: .25;
+            background: teal;
+            opacity: 0.25;
             border: none;
             color: white;
-            touch-action: manipulation; /* Prevent zoom on button tap */
         }
-
         .button {
             width: var(--button-width);
             height: var(--button-height);
@@ -75,7 +62,7 @@
 <body>
 
 <div class="container">
-    <img src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
+    <img src="AKAI MPC 2000.png" alt="Grid Image" class="image">
     <div class="grid-container">
         <button class="grid-item button" onclick="playAudio(0)">1</button>
         <button class="grid-item button" onclick="playAudio(1)">2</button>
@@ -95,79 +82,50 @@
 </div>
 
 <script>
-    let audioContext;
-    let audioBuffers = [];
-
-    // Load all audio files and decode them for quick access
-    const audioFiles = [
-        'piano-1.mp3',
-        'piano-2.mp3',
-        'piano-3.mp3',
-        'piano-4.mp3',
-        'piano-5.mp3',
-        'piano-6.mp3',
-        'piano-7.mp3',
-        'piano-8.mp3',
-        'Instrumental-loop.mp3',
-        'Look At Cha.mp3',
-        'Ladies & Gentlemen Sample.mp3',
-        'Beautiful Stars.mp3',
-        'Hey!.mp3'
+    const audios = [
+        new Audio('piano-1.mp3'),
+        new Audio('piano-2.mp3'),
+        new Audio('piano-3.mp3'),
+        new Audio('piano-4.mp3'),
+        new Audio('piano-5.mp3'),
+        new Audio('piano-6.mp3'),
+        new Audio('piano-7.mp3'),
+        new Audio('piano-8.mp3'),
+        new Audio('Instrumental-loop.mp3'),
+        new Audio('Look At Cha.mp3'),
+        new Audio('Ladies & Gentlemen Sample.mp3'),
+        new Audio('Beautiful Stars.mp3'),
+        new Audio('Hey!.mp3')
     ];
 
-    // Initialize AudioContext for low-latency audio playback
-    window.onload = function() {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        loadAllAudio();
-    };
-
-    // Load all audio files into buffers
-    function loadAllAudio() {
-        audioFiles.forEach((file, index) => {
-            fetch(file)
-                .then(response => response.arrayBuffer())
-                .then(data => audioContext.decodeAudioData(data, buffer => {
-                    audioBuffers[index] = buffer;
-                }))
-                .catch(err => console.error('Error loading audio file:', file, err));
-        });
-    }
-
-    // Play audio with immediate response
     function playAudio(index) {
-        const source = audioContext.createBufferSource();
-        source.buffer = audioBuffers[index];
-        source.connect(audioContext.destination);
-        source.start(0);  // Start playback immediately
-    }
-
-    // Pause audio 9 functionality (if needed)
-    let audio9Source;
-    function playAudio9() {
-        if (audio9Source) {
-            audio9Source.stop();
+        // Stop the current audio if it's playing
+        if (!audios[index].paused) {
+            audios[index].pause();
+            audios[index].currentTime = 0;  // Restart from the beginning
         }
-        audio9Source = audioContext.createBufferSource();
-        audio9Source.buffer = audioBuffers[8];
-        audio9Source.connect(audioContext.destination);
-        audio9Source.start(0);
+        
+        // Play the audio
+        audios[index].play();
+
+        // Handle button 9 special case for pause with button 14
+        if (index === 8) {
+            window.audio9 = audios[index];
+        }
     }
 
     function pauseAudio9() {
-        if (audio9Source) {
-            audio9Source.stop();
+        if (window.audio9) {
+            window.audio9.pause();
         }
     }
 
-    // Prevent double-tap zoom
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function(event) {
-        const now = (new Date()).getTime();
-        if (now - lastTouchEnd <= 300) {
-            event.preventDefault(); // Prevent double-tap zoom globally
-        }
-        lastTouchEnd = now;
-    }, false);
+    // Ensure audio starts faster with reduced latency
+    window.onload = function() {
+        audios.forEach(audio => {
+            audio.load();  // Preload audios to reduce initial latency
+        });
+    };
 </script>
 
 </body>
