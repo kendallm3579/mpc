@@ -62,7 +62,7 @@
 <body>
 
 <div class="container">
-    <img src="AKAI MPC 2000.png" alt="Grid Image" class="image">
+    <img src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
     <div class="grid-container">
         <button class="grid-item button" onclick="playAudio(0)">1</button>
         <button class="grid-item button" onclick="playAudio(1)">2</button>
@@ -169,6 +169,24 @@
             lastTouchTime = currentTime;
         }, { passive: false });
     });
+
+    // Disable double-tap to zoom for the entire document
+    document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+    });
+
+    document.addEventListener('dblclick', function (e) {
+        e.preventDefault();
+    });
+
+    // Disable zooming by capturing touch events
+    document.addEventListener('touchmove', function (e) {
+        if (e.scale !== undefined && e.scale !== 1) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    document.documentElement.style.touchAction = 'manipulation'; // Disable double-tap to zoom
 </script>
 
 </body>
