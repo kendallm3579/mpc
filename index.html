@@ -8,8 +8,10 @@
         :root {
             --button-size: 155px; /* Default button size */
             --grid-gap: 22px; /* Default gap between buttons */
-            --grid-padding-top: 200px; /* Default padding top */
+            --grid-padding-top: 300px; /* Default padding top */
             --grid-padding-left: 0px; /* Default padding left */
+            --toggle-button-padding-top: 150px; /* Default top padding for toggle button */
+            --toggle-button-padding-left: 330px; /* Default left padding for toggle button */
         }
 
         html, body {
@@ -23,6 +25,16 @@
             position: relative;
             width: 100%;
             height: 100%;
+        }
+
+        .toggle-button {
+            position: absolute;
+            top: var(--toggle-button-padding-top);
+            left: var(--toggle-button-padding-left);
+            background-color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
         }
 
         .image {
@@ -52,7 +64,7 @@
             background: red;
             opacity: 0.25;
             border: none;
-            color: transparent;
+            color: white;
             width: var(--button-size);
             height: var(--button-size);
         }
@@ -61,7 +73,8 @@
 <body>
 
 <div class="container">
-    <img src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
+    <button class="toggle-button" onclick="toggleImage()">Toggle Image</button>
+    <img id="gridImage" src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
     <div class="grid-container">
         <button class="grid-item" onclick="playAudio(0)">1</button>
         <button class="grid-item" onclick="playAudio(1)">2</button>
@@ -86,6 +99,8 @@
     let playingSource = {};
     let lastTouchTime = 0;  
     let minTapInterval = 25;  // Adjustable minimum tap interval in milliseconds
+    let currentImage = 0;
+    const images = ['AKAI MPC 2000 TEAL.png', 'AKAI MPC 2000.png'];
 
     // Initialize the audio context on user interaction (Safari requires user interaction to unlock audio context)
     window.addEventListener('touchstart', function() {
@@ -154,6 +169,11 @@
         if (window.audio9) {
             window.audio9.stop();
         }
+    }
+
+    function toggleImage() {
+        currentImage = (currentImage + 1) % images.length;
+        document.getElementById('gridImage').src = images[currentImage];
     }
 
     // Disable double-tap zoom and allow fast taps
