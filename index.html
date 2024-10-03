@@ -67,7 +67,7 @@
 <body>
 
 <div class="container">
-    <img src="AKAI MPC 2000.png" alt="Grid Image" class="image">
+    <img src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
     <div class="grid-container">
         <button class="grid-item button" onclick="playAudio(0)">1</button>
         <button class="grid-item button" onclick="playAudio(1)">2</button>
@@ -91,7 +91,7 @@
     let bufferList = [];
     let playingSource = {};
     let lastTouchTime = 0;  
-    let minTapInterval = 50;  // Adjustable minimum tap interval in milliseconds
+    let minTapInterval = 25;  // Adjustable minimum tap interval in milliseconds
 
     // Initialize the audio context on user interaction (Safari requires user interaction to unlock audio context)
     window.addEventListener('touchstart', function() {
