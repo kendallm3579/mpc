@@ -8,10 +8,10 @@
         :root {
             --button-size: 79px; /* Default button size */
             --grid-gap: 10px; /* Default gap between buttons */
-            --grid-padding-top: 169px; /* Default padding top */
+            --grid-padding-top: 173px; /* Default padding top */
             --grid-padding-left: 0px; /* Default padding left */
-            --toggle-button-padding-top: 220px; /* Default top padding for toggle button */
-            --toggle-button-padding-left: 125px; /* Default left padding for toggle button */
+            --toggle-button-padding-top: 170px; /* Default top padding for toggle button */
+            --toggle-button-padding-left: 179px; /* Default left padding for toggle button */
         }
 
         html, body {
@@ -34,7 +34,7 @@
             position: absolute;
             top: var(--toggle-button-padding-top);
             left: var(--toggle-button-padding-left);
-            background-color: rgba(43, 255, 0, 0.616);
+            background-color: rgba(255, 0, 0, 0.616);
             border: none;
             padding: 10px;
             cursor: pointer;
@@ -64,7 +64,7 @@
             text-align: center;
             font-size: 20px;
             cursor: pointer;
-            background: brown;
+            background: rgb(43, 255, 0);
             opacity: 0.25;
             border: none;
             color: white;
@@ -101,7 +101,7 @@
     let bufferList = [];
     let playingSource = {};
     let lastTouchTime = 0;  
-    let minTapInterval = 25;  // Adjustable minimum tap interval in milliseconds
+    let minTapInterval = 10;  // Adjustable minimum tap interval in milliseconds
     let currentImage = 0;
     const images = ['AKAI MPC 2000 TEAL.png', 'AKAI MPC 2000.png'];
 
@@ -174,8 +174,12 @@
         }
     }
 
-    // Toggle image on button click or touch
-    document.getElementById('toggleButton').addEventListener('touchstart', toggleImage);
+    // Toggle image on button click or touchend
+    document.getElementById('toggleButton').addEventListener('touchend', function(e) {
+        e.preventDefault(); // Prevent default touch behavior
+        toggleImage();
+    });
+    
     document.getElementById('toggleButton').addEventListener('click', toggleImage);
 
     function toggleImage() {
