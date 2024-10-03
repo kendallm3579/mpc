@@ -29,15 +29,15 @@
         }
 
         .image-button {
-            color: rgba(98, 0, 255, 0.534);
             width: 109px;
             height: 40px;
             position: absolute;
             top: var(--image-button-padding-top);
-            background-color: rgba(43, 255, 0, 0.616);
+            background-color: rgba(255, 0, 0, 0.616);
             border: none;
             padding: 10px;
             cursor: pointer;
+            z-index: 10; /* Ensure buttons are above the image */
         }
 
         #buttonImage1 {
@@ -50,7 +50,7 @@
 
         .image {
             width: 100%;
-            height: auto;
+            height: 100%;
             object-fit: contain;
         }
 
@@ -72,7 +72,7 @@
             text-align: center;
             font-size: 20px;
             cursor: pointer;
-            background: rgb(153, 0, 255);
+            background: rgb(0, 172, 224);
             opacity: 0.25;
             border: none;
             color: white;
