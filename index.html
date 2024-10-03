@@ -10,9 +10,9 @@
             --grid-gap: 10px;
             --grid-padding-top: 173px;
             --grid-padding-left: 0px;
-            --image-button-padding-top: 25%;
-            --image-button-padding-left: 6%;
-            --second-image-button-padding-left: 26%;
+            --image-button-padding-top: 28%;
+            --image-button-padding-left: 7%;
+            --second-image-button-padding-left: 23%;
         }
 
         html, body {
@@ -33,7 +33,7 @@
             height: 30px;
             position: absolute;
             top: var(--image-button-padding-top);
-            background-color: rgba(255, 0, 200, 0.616);
+            background-color: rgba(255, 196, 0, 0.616);
             border: none;
             padding: 10px;
             cursor: pointer;
@@ -75,7 +75,7 @@
             background: transparent;
             opacity: 0.25;
             border: none;
-            color:transparent;
+            color: transparent;
             width: var(--button-size);
             height: var(--button-size);
         }
@@ -109,8 +109,8 @@
     let audioContext;
     let bufferList = [];
     let playingSource = {};
-    let lastTouchTime = 0;  
-    let minTapInterval = 25;  
+    let lastTouchTime = 0;
+    let minTapInterval = 25;
     const images = ['AKAI MPC 2000 TEAL.png', 'AKAI MPC 2000.png'];
 
     window.addEventListener('touchstart', function() {
@@ -152,7 +152,7 @@
         const currentTime = new Date().getTime();
         const timeDifference = currentTime - lastTouchTime;
 
-        if (timeDifference < minTapInterval) return; 
+        if (timeDifference < minTapInterval) return;
         lastTouchTime = currentTime;
 
         if (playingSource[index]) {
@@ -195,6 +195,7 @@
                 e.preventDefault();
             }
             lastTouchTime = currentTime;
+            playAudio(parseInt(button.innerText) - 1);  // Adjust to match the audio index
         }, { passive: false });
     });
 
