@@ -10,8 +10,9 @@
             --grid-gap: 10px; /* Default gap between buttons */
             --grid-padding-top: 173px; /* Default padding top */
             --grid-padding-left: 0px; /* Default padding left */
-            --toggle-button-padding-top: 180px; /* Default top padding for toggle button */
-            --toggle-button-padding-left: 159px; /* Default left padding for toggle button */
+            --image-button-padding-top: 170px; /* Default top padding for image buttons */
+            --image-button-padding-left: 50px; /* Default left padding for first image button */
+            --second-image-button-padding-left: 250px; /* Default left padding for second image button */
         }
 
         html, body {
@@ -27,17 +28,24 @@
             height: 100%;
         }
 
-        .toggle-button {
-            color: rgba(0, 38, 255, 0.534);
+        .image-button {
+            color: rgba(0, 255, 0, 0.534);
             width: 109px;
             height: 40px;
             position: absolute;
-            top: var(--toggle-button-padding-top);
-            left: var(--toggle-button-padding-left);
-            background-color: rgba(25, 0, 255, 0.616);
+            top: var(--image-button-padding-top);
+            background-color: rgba(43, 255, 0, 0.616);
             border: none;
             padding: 10px;
             cursor: pointer;
+        }
+
+        #buttonImage1 {
+            left: var(--image-button-padding-left);
+        }
+
+        #buttonImage2 {
+            left: var(--second-image-button-padding-left);
         }
 
         .image {
@@ -64,7 +72,7 @@
             text-align: center;
             font-size: 20px;
             cursor: pointer;
-            background: rgb(255, 0, 0);
+            background: brown;
             opacity: 0.25;
             border: none;
             color: white;
@@ -76,8 +84,10 @@
 <body>
 
 <div class="container">
-    <button class="toggle-button" id="toggleButton">Toggle Image</button>
+    <button class="image-button" id="buttonImage1">Image 1</button>
+    <button class="image-button" id="buttonImage2">Image 2</button>
     <img id="gridImage" src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
+    
     <div class="grid-container">
         <button class="grid-item" onclick="playAudio(0)">1</button>
         <button class="grid-item" onclick="playAudio(1)">2</button>
@@ -101,8 +111,7 @@
     let bufferList = [];
     let playingSource = {};
     let lastTouchTime = 0;  
-    let minTapInterval = 15;  // Adjustable minimum tap interval in milliseconds
-    let currentImage = 0;
+    let minTapInterval = 25;  // Adjustable minimum tap interval in milliseconds
     const images = ['AKAI MPC 2000 TEAL.png', 'AKAI MPC 2000.png'];
 
     // Initialize the audio context on user interaction (Safari requires user interaction to unlock audio context)
@@ -174,13 +183,15 @@
         }
     }
 
-    // Toggle image on button pointerup event for better cross-device compatibility
-    document.getElementById('toggleButton').addEventListener('pointerup', toggleImage);
+    // Button to display Image 1
+    document.getElementById('buttonImage1').addEventListener('pointerup', function() {
+        document.getElementById('gridImage').src = images[0];
+    });
 
-    function toggleImage() {
-        currentImage = (currentImage + 1) % images.length;
-        document.getElementById('gridImage').src = images[currentImage];
-    }
+    // Button to display Image 2
+    document.getElementById('buttonImage2').addEventListener('pointerup', function() {
+        document.getElementById('gridImage').src = images[1];
+    });
 
     // Disable double-tap zoom and allow fast taps
     document.querySelectorAll('.grid-item').forEach(button => {
