@@ -10,9 +10,9 @@
             --grid-gap: 10px;
             --grid-padding-top: 173px;
             --grid-padding-left: 0px;
-            --image-button-padding-top: 28%;
-            --image-button-padding-left: 7%;
-            --second-image-button-padding-left: 23%;
+            --image-button-padding-top: 26%;
+            --image-button-padding-left: 6.5%;
+            --second-image-button-padding-left: 21%;
         }
 
         html, body {
@@ -33,7 +33,7 @@
             height: 30px;
             position: absolute;
             top: var(--image-button-padding-top);
-            background-color: rgba(255, 196, 0, 0.616);
+            background-color: rgba(255, 0, 0, 0.616);
             border: none;
             padding: 10px;
             cursor: pointer;
@@ -88,19 +88,19 @@
     <button class="image-button" id="buttonImage2"></button>
     <img id="gridImage" src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
     <div class="grid-container">
-        <button class="grid-item" onclick="playAudio(0)">1</button>
-        <button class="grid-item" onclick="playAudio(1)">2</button>
-        <button class="grid-item" onclick="playAudio(2)">3</button>
-        <button class="grid-item" onclick="playAudio(3)">4</button>
-        <button class="grid-item" onclick="playAudio(4)">5</button>
-        <button class="grid-item" onclick="playAudio(5)">6</button>
-        <button class="grid-item" onclick="playAudio(6)">7</button>
-        <button class="grid-item" onclick="playAudio(7)">8</button>
-        <button class="grid-item" id="audio9" onclick="playAudio(8)">9</button>
-        <button class="grid-item" onclick="playAudio(9)">10</button>
-        <button class="grid-item" onclick="playAudio(10)">11</button>
-        <button class="grid-item" onclick="playAudio(11)">12</button>
-        <button class="grid-item" onclick="playAudio(12)">13</button>
+        <button class="grid-item" data-audio-index="0">1</button>
+        <button class="grid-item" data-audio-index="1">2</button>
+        <button class="grid-item" data-audio-index="2">3</button>
+        <button class="grid-item" data-audio-index="3">4</button>
+        <button class="grid-item" data-audio-index="4">5</button>
+        <button class="grid-item" data-audio-index="5">6</button>
+        <button class="grid-item" data-audio-index="6">7</button>
+        <button class="grid-item" data-audio-index="7">8</button>
+        <button class="grid-item" data-audio-index="8">9</button>
+        <button class="grid-item" data-audio-index="9">10</button>
+        <button class="grid-item" data-audio-index="10">11</button>
+        <button class="grid-item" data-audio-index="11">12</button>
+        <button class="grid-item" data-audio-index="12">13</button>
         <button class="grid-item" onclick="pauseAudio9()">Pause 9</button>
     </div>
 </div>
@@ -109,8 +109,9 @@
     let audioContext;
     let bufferList = [];
     let playingSource = {};
-    let lastTouchTime = 0;
+    let activeTouchIds = new Set();
     let minTapInterval = 25;
+
     const images = ['AKAI MPC 2000 TEAL.png', 'AKAI MPC 2000.png'];
 
     window.addEventListener('touchstart', function() {
@@ -149,27 +150,39 @@
     }
 
     function playAudio(index) {
-        const currentTime = new Date().getTime();
-        const timeDifference = currentTime - lastTouchTime;
-
-        if (timeDifference < minTapInterval) return;
-        lastTouchTime = currentTime;
-
         if (playingSource[index]) {
             playingSource[index].stop();
         }
+        const source = audioContext.createBufferSource();
+        source.buffer = bufferList[index];
+        source.connect(audioContext.destination);
+        source.start(0);
+        playingSource[index] = source;
 
-        requestAnimationFrame(() => {
-            const source = audioContext.createBufferSource();
-            source.buffer = bufferList[index];
-            source.connect(audioContext.destination);
-            source.start(0);
-            playingSource[index] = source;
+        if (index === 8) {
+            window.audio9 = source;
+        }
+    }
 
-            if (index === 8) {
-                window.audio9 = source;
+    function handleTouchStart(event) {
+        const touches = event.changedTouches;
+        for (let i = 0; i < touches.length; i++) {
+            const touch = touches[i];
+            activeTouchIds.add(touch.identifier);
+            const target = document.elementFromPoint(touch.clientX, touch.clientY);
+            if (target && target.classList.contains('grid-item')) {
+                const audioIndex = target.getAttribute('data-audio-index');
+                playAudio(parseInt(audioIndex));
             }
-        });
+        }
+    }
+
+    function handleTouchEnd(event) {
+        const touches = event.changedTouches;
+        for (let i = 0; i < touches.length; i++) {
+            const touch = touches[i];
+            activeTouchIds.delete(touch.identifier);
+        }
     }
 
     function pauseAudio9() {
@@ -187,23 +200,15 @@
     });
 
     document.querySelectorAll('.grid-item').forEach(button => {
-        button.addEventListener('touchstart', function(e) {
-            const currentTime = new Date().getTime();
-            const timeDifference = currentTime - lastTouchTime;
-
-            if (timeDifference < minTapInterval) {
-                e.preventDefault();
-            }
-            lastTouchTime = currentTime;
-            playAudio(parseInt(button.innerText) - 1);  // Adjust to match the audio index
-        }, { passive: false });
+        button.addEventListener('touchstart', handleTouchStart, { passive: false });
+        button.addEventListener('touchend', handleTouchEnd, { passive: false });
     });
 
-    document.addEventListener('gesturestart', function (e) {
+    document.addEventListener('gesturestart', function(e) {
         e.preventDefault();
     });
 
-    document.addEventListener('dblclick', function (e) {
+    document.addEventListener('dblclick', function(e) {
         e.preventDefault();
     });
 
