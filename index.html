@@ -8,9 +8,9 @@
         :root {
             --button-size: 79px; /* Default button size */
             --grid-gap: 10px; /* Default gap between buttons */
-            --grid-padding-top: 175px; /* Default padding top */
+            --grid-padding-top: 169px; /* Default padding top */
             --grid-padding-left: 0px; /* Default padding left */
-            --toggle-button-padding-top: 160px; /* Default top padding for toggle button */
+            --toggle-button-padding-top: 220px; /* Default top padding for toggle button */
             --toggle-button-padding-left: 125px; /* Default left padding for toggle button */
         }
 
@@ -28,13 +28,13 @@
         }
 
         .toggle-button {
-            color: rgba(162, 0, 255, 0.719);
-            width: 157px;
-            height: 50px;
+            color: rgba(0, 255, 0, 0.534);
+            width: 109px;
+            height: 40px;
             position: absolute;
             top: var(--toggle-button-padding-top);
             left: var(--toggle-button-padding-left);
-            background-color: rgba(255, 103, 255, 0.726);
+            background-color: rgba(43, 255, 0, 0.616);
             border: none;
             padding: 10px;
             cursor: pointer;
@@ -64,7 +64,7 @@
             text-align: center;
             font-size: 20px;
             cursor: pointer;
-            background: orange;
+            background: brown;
             opacity: 0.25;
             border: none;
             color: white;
@@ -76,7 +76,7 @@
 <body>
 
 <div class="container">
-    <button class="toggle-button" onclick="toggleImage()">Toggle Image</button>
+    <button class="toggle-button" id="toggleButton">Toggle Image</button>
     <img id="gridImage" src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
     <div class="grid-container">
         <button class="grid-item" onclick="playAudio(0)">1</button>
@@ -173,6 +173,10 @@
             window.audio9.stop();
         }
     }
+
+    // Toggle image on button click or touch
+    document.getElementById('toggleButton').addEventListener('touchstart', toggleImage);
+    document.getElementById('toggleButton').addEventListener('click', toggleImage);
 
     function toggleImage() {
         currentImage = (currentImage + 1) % images.length;
