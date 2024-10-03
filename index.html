@@ -10,8 +10,8 @@
             --grid-gap: 10px; /* Default gap between buttons */
             --grid-padding-top: 173px; /* Default padding top */
             --grid-padding-left: 0px; /* Default padding left */
-            --toggle-button-padding-top: 170px; /* Default top padding for toggle button */
-            --toggle-button-padding-left: 179px; /* Default left padding for toggle button */
+            --toggle-button-padding-top: 180px; /* Default top padding for toggle button */
+            --toggle-button-padding-left: 159px; /* Default left padding for toggle button */
         }
 
         html, body {
@@ -28,13 +28,13 @@
         }
 
         .toggle-button {
-            color: rgba(0, 255, 0, 0.534);
+            color: rgba(0, 38, 255, 0.534);
             width: 109px;
             height: 40px;
             position: absolute;
             top: var(--toggle-button-padding-top);
             left: var(--toggle-button-padding-left);
-            background-color: rgba(255, 0, 0, 0.616);
+            background-color: rgba(25, 0, 255, 0.616);
             border: none;
             padding: 10px;
             cursor: pointer;
@@ -64,7 +64,7 @@
             text-align: center;
             font-size: 20px;
             cursor: pointer;
-            background: rgb(43, 255, 0);
+            background: rgb(255, 0, 0);
             opacity: 0.25;
             border: none;
             color: white;
@@ -101,7 +101,7 @@
     let bufferList = [];
     let playingSource = {};
     let lastTouchTime = 0;  
-    let minTapInterval = 10;  // Adjustable minimum tap interval in milliseconds
+    let minTapInterval = 15;  // Adjustable minimum tap interval in milliseconds
     let currentImage = 0;
     const images = ['AKAI MPC 2000 TEAL.png', 'AKAI MPC 2000.png'];
 
@@ -174,13 +174,8 @@
         }
     }
 
-    // Toggle image on button click or touchend
-    document.getElementById('toggleButton').addEventListener('touchend', function(e) {
-        e.preventDefault(); // Prevent default touch behavior
-        toggleImage();
-    });
-    
-    document.getElementById('toggleButton').addEventListener('click', toggleImage);
+    // Toggle image on button pointerup event for better cross-device compatibility
+    document.getElementById('toggleButton').addEventListener('pointerup', toggleImage);
 
     function toggleImage() {
         currentImage = (currentImage + 1) % images.length;
