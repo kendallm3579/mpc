@@ -88,7 +88,7 @@
 <div class="container">
     <button class="image-button" id="buttonImage1"></button>
     <button class="image-button" id="buttonImage2"></button>
-    <img id="gridImage" src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
+    <img id="gridImage" src="AKAI MPC 2000.png" alt="Grid Image" class="image">
     <div class="grid-container">
         <button class="grid-item" data-audio-index="0">1</button>
         <button class="grid-item" data-audio-index="1">2</button>
@@ -112,9 +112,9 @@
     let bufferList = [];
     let playingSource = {};
     let activeTouchIds = new Set();
-    let minTapInterval = 25;
+    let minTapInterval = 15;
 
-    const images = ['AKAI MPC 2000 TEAL.png', 'AKAI MPC 2000.png'];
+    const images = ['AKAI MPC 2000.png', 'AKAI MPC 2000 TEAL.png'];
 
     window.addEventListener('touchstart', function() {
         if (!audioContext) {
