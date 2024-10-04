@@ -104,6 +104,8 @@
         <button class="grid-item" data-audio-index="11">12</button>
         <button class="grid-item" data-audio-index="12">13</button>
         <button class="grid-item" onclick="pauseAudio9()">Pause 9</button>
+        <button class="grid-item" onclick="showAlert1()">Alert</button>
+        <button class="grid-item" onclick="showAlert2()">Alert</button>
     </div>
 </div>
 
@@ -198,7 +200,7 @@
     });
 
     document.getElementById('buttonImage2').addEventListener('click', function() {
-        document.getElementById('gridImage').src = images[1];
+        document.getElementById('gridImage').src = images[1]);
     });
 
     document.querySelectorAll('.grid-item').forEach(button => {
@@ -216,14 +218,12 @@
 
     document.documentElement.style.touchAction = 'manipulation';
 
-    // Greeting message on first visit
-    document.addEventListener("DOMContentLoaded", function() {
-        if (!localStorage.getItem("visited")) {
-            alert("Switch skins with the TAN/TEAL buttons\nTurn Silent Mode OFF\nMake sure you are zoomed at 100%\nDM @kendall.makes.stuff with feedback");
-
-            localStorage.setItem("visited", "true");
-        }
-    });
+    function showAlert1() {
+        alert("Switch skins with the TAN/TEAL buttons\nTurn Silent Mode OFF\nMake sure you are zoomed at 100%\nDM @kendall.makes.stuff with feedback");
+    }
+    function showAlert2() {
+        alert("peepee poopoo");
+    }
 </script>
 
 </body>
