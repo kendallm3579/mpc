@@ -39,7 +39,7 @@
             border: none;
             padding: 10px;
             cursor: pointer;
-            z-index: 10; /* Ensure buttons are above the image */
+            z-index: 10;
         }
 
         #buttonImage1 {
@@ -82,31 +82,31 @@
             height: var(--button-size);
         }
 
-        /* Modal styles */
         .modal {
-            display: none; /* Hidden by default */
+            display: none; 
             position: fixed;
-            z-index: 100; /* On top */
+            z-index: 100; 
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+            background-color: rgba(0, 0, 0, 0.5); 
         }
 
         .modal-content {
-            background-color: white;
-            margin: 15% auto;
+            background-color: rgb(127, 190, 177);
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 35% auto;
             padding: 20px;
-            border: 1px solid #888;
             width: 80%;
             text-align: center;
         }
 
         .close-button {
-            background-color: #f44336;
+            background-color: #c50021;
             color: white;
+            font-family: Arial, Helvetica, sans-serif;
             padding: 10px 20px;
             cursor: pointer;
             border: none;
@@ -121,7 +121,6 @@
     <button class="image-button" id="buttonImage2"></button>
     <img id="gridImage" src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
     <div class="grid-container">
-        <!-- Existing buttons -->
         <button class="grid-item" data-audio-index="0">1</button>
         <button class="grid-item" data-audio-index="1">2</button>
         <button class="grid-item" data-audio-index="2">3</button>
@@ -136,17 +135,14 @@
         <button class="grid-item" data-audio-index="11">12</button>
         <button class="grid-item" data-audio-index="12">13</button>
         <button class="grid-item" onclick="pauseAudio9()">Pause 9</button>
-
-        <!-- New buttons -->
         <button class="grid-item" onclick="openModal()">Message</button>
-        <button class="grid-item" onclick="openVideo()">Play Video</button>
+
     </div>
 </div>
 
-<!-- Modal HTML -->
 <div id="myModal" class="modal">
     <div class="modal-content">
-        <p>Use the TAN/TEAL buttons to switch skins<br>Turn Silent Mode OFF<br>Make sure you are zoomed at 100%<br>DM @kendall.makes.stuff on IG with feedback</p>
+        <p>ABOUT<br><br>Use the TAN/TEAL buttons to switch skins<br>Turn Silent Mode OFF<br>Make sure you are zoomed at 100%<br>DM @kendall.makes.stuff on IG with feedback</p>
         <button class="close-button" onclick="closeModal()">OK</button>
     </div>
 </div>
@@ -250,7 +246,6 @@
         button.addEventListener('touchend', handleTouchEnd, { passive: false });
     });
 
-    /* Modal functionality */
     function openModal() {
         document.getElementById('myModal').style.display = 'block';
     }
@@ -259,7 +254,6 @@
         document.getElementById('myModal').style.display = 'none';
     }
 
-    /* Open video in a new tab */
     function openVideo() {
         window.open('vma.mp4', '_blank');
     }
