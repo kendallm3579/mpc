@@ -83,7 +83,6 @@
         }
 
         .modal {
-           
     display: none; 
     position: fixed;
     z-index: 150; 
@@ -99,28 +98,31 @@
     background-color: rgb(91, 172, 156);
     border: 10px solid goldenrod;
     font-family: Cambria;
-    padding: 10px; /* Reduce padding to allow more content space */
-    width: 200px; /* Keep the square shape */
-    height: 200px; /* Keep the square shape */
+    padding: 10px;
+    width: 200px;
+    height: 200px;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center the popup */
+    transform: translate(-50%, -50%);
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Adjust spacing between text and button */
+    justify-content: space-between;
+    line-height: 1.5; /* Adjust line spacing between text lines */
 }
 
 .close-button {
     background-color: #c50021;
     color: white;
     font-family: Cambria;
-    padding: 5px 10px; /* Reduce padding to fit within the square */
+    padding: 5px 10px;
     cursor: pointer;
     border: none;
-    font-size: 9px; /* Slightly reduce the font size */
+    font-size: 8px;
+    margin-top: 10px; /* Add spacing between text and button */
 }
+
 
 
     </style>
