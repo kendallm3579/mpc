@@ -109,7 +109,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    line-height: 2; /* Adjust line spacing between text lines */
+    line-height: 2; 
 }
 
 .close-button {
@@ -120,7 +120,7 @@
     cursor: pointer;
     border: none;
     font-size: 9px;
-    margin-top: 5px; /* Add spacing between text and button */
+    margin-top: 5px; 
 }
 
 
@@ -155,10 +155,17 @@
 
 <div id="myModal" class="modal">
     <div class="modal-content">
-        <p>Switch skins with TAN/TEAL<br>Turn Silent Mode OFF<br>Make sure your zoom is 100%<br>Questions/Feedback?<br>DM kendall.makes.stuff on IG</p>
+        <p>
+            Switch skins with TAN/TEAL<br>
+            Turn Silent Mode OFF<br>
+            Make sure your zoom is 100%<br>
+            Questions/Feedback?<br>
+            DM <a href="https://www.instagram.com/kendall.makes.stuff" target="_blank" style="color: blue; text-decoration: underline;">kendall.makes.stuff</a> on IG
+        </p>
         <button class="close-button" onclick="closeModal()">OK</button>
     </div>
 </div>
+
 
 <script>
     let audioContext;
