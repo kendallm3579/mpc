@@ -139,7 +139,7 @@
 
         <!-- New buttons -->
         <button class="grid-item" onclick="openModal()">Message</button>
-        <button class="grid-item" onclick="confirmUrl()">Open URL</button>
+        <button class="grid-item" onclick="openVideo()">Play Video</button>
     </div>
 </div>
 
@@ -259,12 +259,9 @@
         document.getElementById('myModal').style.display = 'none';
     }
 
-    /* Confirm and open URL */
-    function confirmUrl() {
-        let userConfirmed = confirm("Would you like to watch the 2010 Runaway VMA performance?");
-        if (userConfirmed) {
-            window.open('https://ia801202.us.archive.org/25/items/2010-vma-kanye-runaway-full-hd-1080p-low-fr-24/%3D%3D2010VMA-KanyeRunaway%3D%3D_Full%20HD%201080p_LOW_FR24.mp4', '_blank');
-        }
+    /* Open video in a new tab */
+    function openVideo() {
+        window.open('vma.mp4', '_blank');
     }
 
     document.addEventListener('gesturestart', function(e) {
@@ -276,7 +273,6 @@
     });
 
     document.documentElement.style.touchAction = 'manipulation';
-
 </script>
 
 </body>
