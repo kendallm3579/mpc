@@ -215,6 +215,15 @@
     });
 
     document.documentElement.style.touchAction = 'manipulation';
+
+    // Greeting message on first visit
+    document.addEventListener("DOMContentLoaded", function() {
+        if (!localStorage.getItem("visited")) {
+            alert("Switch skins with the TAN/TEAL buttons\nTurn Silent Mode OFF\nMake sure you are zoomed at 100%\nDM @kendall.makes.stuff with feedback");
+
+            localStorage.setItem("visited", "true");
+        }
+    });
 </script>
 
 </body>
