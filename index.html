@@ -83,36 +83,41 @@
         }
 
         .modal {
-            display: none; 
-            position: fixed;
-            z-index: 100; 
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: #c50021a8; 
-        }
+    display: none; 
+    position: fixed;
+    z-index: 100; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #960019a8; 
+}
 
-        .modal-content {
-            background-color: rgb(91, 172, 156);
-            border-color: goldenrod;
-            font-family: Cambria;
-            margin: 35% auto;
-            padding: 20px;
-            width: 80%;
-            text-align: center;
-        }
+.modal-content {
+    background-color: rgb(91, 172, 156);
+    border: 10px solid goldenrod;
+    font-family: Cambria;
+    padding: 20px;
+    width: 300px; /* Set a fixed width */
+    height: 300px; /* Set the same value for height to make it a square */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the popup */
+    text-align: center;
+}
 
-        .close-button {
-            background-color: #c50021;
-            color: white;
-            font-family: Arial, Helvetica, sans-serif;
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            font-size: 16px;
-        }
+.close-button {
+    background-color: #c50021;
+    color: white;
+    font-family: Cambria;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    font-size: 13px;
+}
+
     </style>
 </head>
 <body>
@@ -143,7 +148,7 @@
 
 <div id="myModal" class="modal">
     <div class="modal-content">
-        <p>ABOUT<br><br>Use the TAN/TEAL buttons to switch skins<br>Turn Silent Mode OFF<br>Make sure you are zoomed at 100%<br>DM @kendall.makes.stuff on IG with feedback</p>
+        <p>ABOUT<br><br>Use Tan/Teal buttons to switch skins<br>Turn Silent Mode OFF<br>Make sure you are zoomed at 100%<br>Questions/Feedback?<br>DM @kendall.makes.stuff on IG</p>
         <button class="close-button" onclick="closeModal()">OK</button>
     </div>
 </div>
