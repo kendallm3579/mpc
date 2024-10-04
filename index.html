@@ -81,6 +81,37 @@
             width: var(--button-size);
             height: var(--button-size);
         }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 100; /* On top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            text-align: center;
+        }
+
+        .close-button {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +121,7 @@
     <button class="image-button" id="buttonImage2"></button>
     <img id="gridImage" src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
     <div class="grid-container">
+        <!-- Existing buttons -->
         <button class="grid-item" data-audio-index="0">1</button>
         <button class="grid-item" data-audio-index="1">2</button>
         <button class="grid-item" data-audio-index="2">3</button>
@@ -104,8 +136,18 @@
         <button class="grid-item" data-audio-index="11">12</button>
         <button class="grid-item" data-audio-index="12">13</button>
         <button class="grid-item" onclick="pauseAudio9()">Pause 9</button>
-        <button class="grid-item" onclick="showAlert1()">Alert</button>
-        <button class="grid-item" onclick="showAlert2()">Alert</button>
+
+        <!-- New buttons -->
+        <button class="grid-item" onclick="openModal()">Message</button>
+        <button class="grid-item" onclick="confirmUrl()">Open URL</button>
+    </div>
+</div>
+
+<!-- Modal HTML -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <p>Use the TAN/TEAL buttons to switch skins<br>Turn Silent Mode OFF<br>Make sure you are zoomed at 100%<br>DM @kendall.makes.stuff on IG with feedback</p>
+        <button class="close-button" onclick="closeModal()">OK</button>
     </div>
 </div>
 
@@ -200,13 +242,30 @@
     });
 
     document.getElementById('buttonImage2').addEventListener('click', function() {
-        document.getElementById('gridImage').src = images[1]);
+        document.getElementById('gridImage').src = images[1];
     });
 
     document.querySelectorAll('.grid-item').forEach(button => {
         button.addEventListener('touchstart', handleTouchStart, { passive: false });
         button.addEventListener('touchend', handleTouchEnd, { passive: false });
     });
+
+    /* Modal functionality */
+    function openModal() {
+        document.getElementById('myModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    /* Confirm and open URL */
+    function confirmUrl() {
+        let userConfirmed = confirm("Would you like to watch the 2010 Runaway VMA performance?");
+        if (userConfirmed) {
+            window.open('https://ia801202.us.archive.org/25/items/2010-vma-kanye-runaway-full-hd-1080p-low-fr-24/%3D%3D2010VMA-KanyeRunaway%3D%3D_Full%20HD%201080p_LOW_FR24.mp4', '_blank');
+        }
+    }
 
     document.addEventListener('gesturestart', function(e) {
         e.preventDefault();
@@ -218,12 +277,6 @@
 
     document.documentElement.style.touchAction = 'manipulation';
 
-    function showAlert1() {
-        alert("Switch skins with the TAN/TEAL buttons\nTurn Silent Mode OFF\nMake sure you are zoomed at 100%\nDM @kendall.makes.stuff with feedback");
-    }
-    function showAlert2() {
-        alert("peepee poopoo");
-    }
 </script>
 
 </body>
