@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <title>MPC2000XL</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192x192.png">
@@ -10,11 +10,14 @@
         :root {
             --button-size: 79px;
             --grid-gap: 10px;
-            --grid-padding-top: 173px;
+            --grid-padding-top: 175px;
             --grid-padding-left: 0px;
-            --image-button-padding-top: 27%;
-            --image-button-padding-left: 6.5%;
-            --second-image-button-padding-left: 22%;
+            --image-button-padding-top: 28.5%;
+            --image-button-padding-left: 6.333%;
+            --second-image-button-padding-left: 21.85%;
+            --new-text-button-padding-top: 20%;
+            --new-text-button-padding-left: 6.333%;
+            --new-second-text-button-padding-left: 21.85%;
         }
 
         html, body {
@@ -22,6 +25,8 @@
             padding: 0;
             overflow: hidden;
             background-color: black;
+            touch-action: manipulation;
+            user-select: none;
         }
 
         .container {
@@ -30,30 +35,20 @@
             height: 100%;
         }
 
-        .image-button {
-            width: 40px;
-            height: 30px;
-            position: absolute;
-            top: var(--image-button-padding-top);
-            background-color: transparent;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        #buttonImage1 {
-            left: var(--image-button-padding-left);
-        }
-
-        #buttonImage2 {
-            left: var(--second-image-button-padding-left);
-        }
-
         .image {
             width: 100%;
             height: 100%;
             object-fit: contain;
+        }
+
+        .overlay-image, .overlay-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: none;
         }
 
         .grid-container {
@@ -80,59 +75,90 @@
             color: transparent;
             width: var(--button-size);
             height: var(--button-size);
+            touch-action: manipulation;
+        }
+
+        .image-button, .text-button {
+            width: 40px;
+            height: 30px;
+            position: absolute;
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        #buttonImage1 {
+            top: var(--image-button-padding-top);
+            left: var(--image-button-padding-left);
+        }
+
+        #buttonImage2 {
+            top: var(--image-button-padding-top);
+            left: var(--second-image-button-padding-left);
+        }
+
+        #textButton1 {
+            top: var(--new-text-button-padding-top);
+            left: var(--new-text-button-padding-left);
+        }
+
+        #textButton2 {
+            top: var(--new-text-button-padding-top);
+            left: var(--new-second-text-button-padding-left);
         }
 
         .modal {
-    display: none; 
-    position: fixed;
-    z-index: 150; 
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: #790014d8; 
-}
+            display: none;
+            position: fixed;
+            z-index: 150;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: #790014d8;
+        }
 
-.modal-content {
-    background-color: rgb(91, 172, 156);
-    border: 10px solid goldenrod;
-    font-family: Cambria;
-    padding: 5px;
-    width: 225px;
-    height: 225px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    line-height: 1.7; 
-}
+        .modal-content {
+            background-color: rgb(91, 172, 156);
+            border: 10px solid goldenrod;
+            font-family: Cambria;
+            padding: 5px;
+            width: 225px;
+            height: 225px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            line-height: 1.5;
+        }
 
-.close-button {
-    background-color: #c50021;
-    color: white;
-    font-family: Cambria;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: none;
-    font-size: 9px;
-    margin-top: 5px; 
-}
-
-
-
+        .close-button {
+            background-color: #c50021;
+            color: white;
+            font-family: Cambria;
+            padding: 5px 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 8px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <button class="image-button" id="buttonImage1"></button>
-    <button class="image-button" id="buttonImage2"></button>
-    <img id="gridImage" src="AKAI MPC 2000 TEAL.png" alt="Grid Image" class="image">
+    <img id="gridImage" src="TAN.png" alt="Grid Image" class="image">
+    <img id="overlayImage1" class="overlay-image" src="" alt="Overlay Image 1">
+    <img id="overlayImage2" class="overlay-image" src="" alt="Overlay Image 2">
+    <img id="textButtonImage1" class="overlay-text" src="POWERTXT.png" alt="Text Button Image 1">
+    <img id="textButtonImage2" class="overlay-text" src="RUNAWAYTXT.png" alt="Text Button Image 2">
     <div class="grid-container">
         <button class="grid-item" data-audio-index="0">1</button>
         <button class="grid-item" data-audio-index="1">2</button>
@@ -147,18 +173,23 @@
         <button class="grid-item" data-audio-index="10">11</button>
         <button class="grid-item" data-audio-index="11">12</button>
         <button class="grid-item" data-audio-index="12">13</button>
-        <button class="grid-item" onclick="pauseAudio9()">Pause 9</button>
+        <button class="grid-item" onclick="stopAllAudio()">Stop All</button>
         <button class="grid-item" onclick="openModal()">Message</button>
-
+        <button class="grid-item" onclick="stopSelectedAudio()">Stop Selected</button>
     </div>
+    <button class="image-button" id="buttonImage1"></button>
+    <button class="image-button" id="buttonImage2"></button>
+    <button class="text-button" id="textButton1"></button>
+    <button class="text-button" id="textButton2"></button>
 </div>
 
 <div id="myModal" class="modal">
     <div class="modal-content">
         <p>
+            Play Runaway & POWER<br>
             Switch skins with TAN/TEAL<br>
             Turn Silent Mode OFF<br>
-            Make sure your zoom is 100%<br>
+            Make sure zoom is at 100%<br>
             Share > Add to homescreen<br>
             Questions/Feedback?<br>
             DM <a href="https://www.instagram.com/kendall.makes.stuff" target="_blank" style="color: blue; text-decoration: underline;">kendall.makes.stuff</a> on IG
@@ -167,24 +198,15 @@
     </div>
 </div>
 
-
 <script>
     let audioContext;
     let bufferList = [];
     let playingSource = {};
     let activeTouchIds = new Set();
-    let minTapInterval = 15;
 
-    const images = ['AKAI MPC 2000 TEAL.png', 'AKAI MPC 2000.png'];
+    const images = ['TAN.png', 'TEAL.png', 'RUNAWAYTXT.png', 'POWERTXT.png'];
 
-    window.addEventListener('touchstart', function() {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            loadAudioFiles();
-        }
-    }, { passive: false });
-
-    const audioFiles = [
+    const audioFiles1 = [
         'piano-1.mp3',
         'piano-2.mp3',
         'piano-3.mp3',
@@ -200,7 +222,35 @@
         'Hey!.mp3'
     ];
 
-    function loadAudioFiles() {
+    const audioFiles2 = [
+        'ah.mp3',
+        'ey.mp3',
+        'eyey.mp3',
+        'eyeyey.mp3',
+        'drums.mp3',
+    ];
+
+    let currentAudioFiles = audioFiles1;
+
+    window.addEventListener('load', function() {
+        document.getElementById('gridImage').src = '';
+        document.getElementById('overlayImage1').src = images[0];
+        document.getElementById('overlayImage1').style.display = 'block';
+        document.getElementById('textButtonImage2').src = images[2];
+        document.getElementById('textButtonImage2').style.display = 'block';
+    });
+
+    window.addEventListener('touchstart', function() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            audioContext.resume().then(() => {
+                loadAudioFiles(currentAudioFiles);
+            });
+        }
+    }, { passive: false });
+
+    function loadAudioFiles(audioFiles) {
+        bufferList = [];
         audioFiles.forEach((file, index) => {
             fetch(file)
                 .then(response => response.arrayBuffer())
@@ -248,24 +298,87 @@
         }
     }
 
-    function pauseAudio9() {
-        if (window.audio9) {
-            window.audio9.stop();
-        }
-    }
-
     document.getElementById('buttonImage1').addEventListener('click', function() {
-        document.getElementById('gridImage').src = images[0];
+        hideOverlayImages();
+        showOverlayImage('overlayImage1', images[0]);
     });
 
     document.getElementById('buttonImage2').addEventListener('click', function() {
-        document.getElementById('gridImage').src = images[1];
+        hideOverlayImages();
+        showOverlayImage('overlayImage2', images[1]);
     });
+
+    document.getElementById('textButton1').addEventListener('click', function() {
+        switchTextButtonAudio('textButton1');
+        currentAudioFiles = audioFiles1;
+        loadAudioFiles(currentAudioFiles);
+        showtextButtonImage('textButtonImage1', images[2]);
+    });
+
+    document.getElementById('textButton2').addEventListener('click', function() {
+        switchTextButtonAudio('textButton2');
+        currentAudioFiles = audioFiles2;
+        loadAudioFiles(currentAudioFiles);
+        showtextButtonImage('textButtonImage2', images[3]);
+    });
+
+    function switchTextButtonAudio(buttonId) {
+        const textButton1 = document.getElementById('textButton1');
+        const textButton2 = document.getElementById('textButton2');
+        if (buttonId === 'textButton1') {
+            textButton1.style.backgroundImage = "none";
+            textButton2.style.backgroundImage = "none";
+        } else {
+            textButton1.style.backgroundImage = "none";
+            textButton2.style.backgroundImage = "none";
+        }
+        stopAllAudio();
+        hidetextButtonImages();
+    }
+
+    function showOverlayImage(imageId, imageSrc) {
+        const overlayImage = document.getElementById(imageId);
+        overlayImage.src = imageSrc;
+        overlayImage.style.display = 'block';
+    }
+
+    function hideOverlayImages() {
+        document.getElementById('overlayImage1').style.display = 'none';
+        document.getElementById('overlayImage2').style.display = 'none';
+    }
+
+    function showtextButtonImage(imageId, imageSrc) {
+        const textButtonImage = document.getElementById(imageId);
+        textButtonImage.src = imageSrc;
+        textButtonImage.style.display = 'block';
+    }
+
+    function hidetextButtonImages() {
+        document.getElementById('textButtonImage1').style.display = 'none';
+        document.getElementById('textButtonImage2').style.display = 'none';
+    }
 
     document.querySelectorAll('.grid-item').forEach(button => {
         button.addEventListener('touchstart', handleTouchStart, { passive: false });
         button.addEventListener('touchend', handleTouchEnd, { passive: false });
     });
+
+    function stopAllAudio() {
+        for (let key in playingSource) {
+            if (playingSource[key]) {
+                playingSource[key].stop();
+            }
+        }
+    }
+
+    function stopSelectedAudio() {
+        const indicesToStop = [4, 8];
+        indicesToStop.forEach(index => {
+            if (playingSource[index]) {
+                playingSource[index].stop();
+            }
+        });
+    }
 
     function openModal() {
         document.getElementById('myModal').style.display = 'block';
@@ -275,20 +388,9 @@
         document.getElementById('myModal').style.display = 'none';
     }
 
-    function openVideo() {
-        window.open('vma.mp4', '_blank');
-    }
-
     document.addEventListener('gesturestart', function(e) {
         e.preventDefault();
     });
-
-    document.addEventListener('dblclick', function(e) {
-        e.preventDefault();
-    });
-
-    document.documentElement.style.touchAction = 'manipulation';
 </script>
-
 </body>
 </html>
